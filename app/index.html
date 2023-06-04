@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            background-image: url("https://drive.google.com/uc?export=view&id=1L_DhKk8rKZJfY77MnrIaHCdmQCKbAFuI");
+            background-size: cover;
+        }
+        .button-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        .start-button {
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <audio src="001.mpeg" autoplay></audio>
+
+    <div class="button-container">
+        <button class="start-button" onclick="openPart1()">START</button>
+    </div>
+
+    <script>
+        function openPart1() {
+            window.location.href = "part1.html";
+        }
+    </script>
+    <script>
+        function openmusic() {
+            fetch('music.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('content').innerHTML = data;
+                });
+        }
+    </script>
+</body>
+</html>

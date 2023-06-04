@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Part 1</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .float-file {
+      float: left;
+      /* Additional styles for positioning, margin, etc. */
+    }
+  </style>
+</head>
+<iframe width="0" height="0" src="https://www.youtube.com/embed/QMokMQ8Bu7Y?rel=0&autoplay=1" frameborder="0" allow="autoplay"></iframe>
+<body>
+  <div class="container">
+    <div class="row">
+      <img id="image1" class="image active" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/270px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg" alt="Image 1">
+      <img id="image2" class="image" src="https://static01.nyt.com/images/2018/03/02/arts/design/02picasso-print/01picasso1-articleLarge.jpg?quality=75&auto=webp&disable=upscale" alt="Image 2">
+    </div>
+    <div class="row">
+      <img id="image3" class="image" src="https://cdn.britannica.com/78/43678-050-F4DC8D93/Starry-Night-canvas-Vincent-van-Gogh-New-1889.jpg" alt="Image 3">
+      <img id="image4" class="image" src="https://artin2minutes.files.wordpress.com/2020/12/michelangelo_the-creation-of-adam_art_works_summary_art-in-2-minutes-e1609407812717.jpg" alt="Image 4">
+    </div>
+    <div class="row choices">
+      <button class="choice">Choice 1</button>
+      <button class="choice">Choice 2</button>
+      <button class="choice">Choice 3</button>
+      <button class="choice">Choice 4</button>
+      <button class="choice">Choice 5</button>
+      <button class="choice">Choice 6</button>
+    </div>
+    <div class="result-message"></div>
+    <div class="score-message"></div>
+    <div class="home-button-container">
+      <button class="home-button" onclick="goBack()">Back to Home</button>
+    </div>
+    <div class="float-file">
+      <?php include 'music.php'; ?>
+    </div>
+  </div>
+  
+  <script>
+    const images = ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image4.jpg'];
+    const correctAnswers = ['Leonardo da Vinci', 'Pablo Picasso', 'Vincent van Gogh', 'Michelangelo', 'Salvador Dali', 'Johannes Vermeer'];
+
+    let activeImageIndex = 0;
+    let score = 0;
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function displayActiveImage() {
+      const images = document.querySelectorAll('.image');
+      images.forEach((image, index) => {
+        if (index === activeImageIndex) {
+          image.classList.add('active');
+        } else {
+          image.classList.remove('active');
+        }
+      });
+    }
+
+    function displayChoices() {
+      const choices = document.querySelectorAll('.choice');
+      const shuffledAnswers = shuffle(correctAnswers.slice());
+
+      choices.forEach((choice, index) => {
+        choice.textContent = shuffledAnswers[index];
+      });
+    }
+
+    function showResultMessage(isCorrect) {
+      const resultMessage = document.querySelector('.result-message');
+      resultMessage.textContent = isCorrect ? 'Correct answer!' : 'Wrong answer! Try again.';
+      resultMessage.classList.add(isCorrect ? 'correct' : 'wrong');
+
+      if (isCorrect) {
+        score++;
+      }
+
+      const scoreMessage = document.querySelector('.score-message');
+      scoreMessage.textContent = `Score: ${score}/${20}`;
+    }
+
+    function checkAnswer(event) {
+      const selectedChoice = event.target.textContent;
+      const currentCorrectAnswer = correctAnswers[activeImageIndex];
+
+      if (selectedChoice === currentCorrectAnswer) {
+        showResultMessage(true);
+        activeImageIndex++;
+
+        if (activeImageIndex >= images.length) {
+          const resultMessage = document.querySelector('.result-message');
+          resultMessage.textContent = 'Good Job!';
+
+          const scoreMessage = document.querySelector('.score-message');
+          scoreMessage.textContent = `Final Score: ${score}/${20}`;
+
+          setTimeout(() => {
+            window.location.href = 'part2.html';
+          }, 1);
+        }
+
+        displayActiveImage();
+        displayChoices();
+      } else {
+        showResultMessage(false);
+      }
+    }
+
+    const choices = document.querySelectorAll('.choice');
+    choices.forEach((choice) => {
+      choice.addEventListener('click', checkAnswer);
+    });
+
+    function goBack() {
+      window.history.back();
+    }
+    
+    displayActiveImage();
+    displayChoices();
+  </script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Part 5</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<iframe width="0" height="0" src="https://www.youtube.com/embed/QMokMQ8Bu7Y?rel=0&autoplay=1" frameborder="0" allow="autoplay"></iframe>
+<body>
+  <div class="container">
+    <div class="row">
+      <img id="image1" class="image active" src="https://arthive.net/res/media/img/oy1000/work/3ff/299075@2x.jpeg" alt="Image 1">
+      <img id="image2" class="image" src="https://i.etsystatic.com/10694516/r/il/49c549/1011844518/il_570xN.1011844518_eksf.jpg" alt="Image 2">
+    </div>
+    <div class="row">
+      <img id="image3" class="image" src="https://news.artnet.com/app/news-upload/2021/07/frida_kahlo_paintings_xl_gb_3d_01189_2104261250_id_1313293-5.jpg" alt="Image 3">
+      <img id="image4" class="image" src="https://www.theartstory.org/images20/works/chagall_marc_1.jpg?2" alt="Image 4">
+    </div>
+    <div class="row choices">
+      <button class="choice">Choice 1</button>
+      <button class="choice">Choice 2</button>
+      <button class="choice">Choice 3</button>
+      <button class="choice">Choice 4</button>
+      <button class="choice">Choice 5</button>
+      <button class="choice">Choice 6</button>
+    </div>
+    <div class="result-message"></div>
+    <div class="score-message"></div>
+  </div>
+  
+  <script>
+    const images = ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image4.jpg'];
+    const correctAnswers = ['René Magritte', 'Gustav Klimt', 'Frida Kahlo', 'Marc Chagall', 'Henri Matisse', 'Wassily Kandinsky'];
+
+    let activeImageIndex = 0;
+    let score = 0;
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function displayActiveImage() {
+      const images = document.querySelectorAll('.image');
+      images.forEach((image, index) => {
+        if (index === activeImageIndex) {
+          image.classList.add('active');
+        } else {
+          image.classList.remove('active');
+        }
+      });
+    }
+
+    function displayChoices() {
+      const choices = document.querySelectorAll('.choice');
+      const shuffledAnswers = shuffle(correctAnswers.slice());
+
+      choices.forEach((choice, index) => {
+        choice.textContent = shuffledAnswers[index];
+      });
+    }
+
+    function showResultMessage(isCorrect) {
+      const resultMessage = document.querySelector('.result-message');
+      const scoreMessage = document.querySelector('.score-message');
+
+      if (isCorrect) {
+        resultMessage.textContent = 'Correct answer!';
+        resultMessage.classList.add('correct');
+        score++;
+      } else {
+        resultMessage.textContent = 'Wrong answer! Try again.';
+        resultMessage.classList.add('wrong');
+      }
+
+      scoreMessage.textContent = `Score: ${16 + score}/${20}`;
+    }
+
+    function checkAnswer(event) {
+      const selectedChoice = event.target.textContent;
+      const currentCorrectAnswer = correctAnswers[activeImageIndex];
+
+      if (selectedChoice === currentCorrectAnswer) {
+        showResultMessage(true);
+        activeImageIndex++;
+
+        if (activeImageIndex >= images.length) {
+          const resultMessage = document.querySelector('.result-message');
+          resultMessage.textContent = 'Good Job!';
+
+          const scoreMessage = document.querySelector('.score-message');
+          scoreMessage.textContent = `Final Score: ${20}/${20}`;
+
+          setTimeout(() => {
+            window.location.href = 'part1.html';
+          }, 5500);
+        }
+
+        displayActiveImage();
+        displayChoices();
+      } else {
+        showResultMessage(false);
+      }
+    }
+
+    const choices = document.querySelectorAll('.choice');
+    choices.forEach((choice) => {
+      choice.addEventListener('click', checkAnswer);
+    });
+
+    displayActiveImage();
+    displayChoices();
+  </script>
+</body>
+</html>
